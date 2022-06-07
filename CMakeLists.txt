@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 COMPONENTS Core Network REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
             
 set(SOURCES
     handler/QBreakpadHandler.cpp
@@ -54,16 +55,22 @@ else()
     )
 endif()
 
-add_library(qBreakpad STATIC ${SOURCES} ${HEADERS})
+if(${PROJECT_NAME} GREATER_EQUAL 6)
+    qt_add_library(${PROJECT_NAME} STATIC
+        MANUAL_FINALIZATION
+        ${SOURCES} ${HEADERS}
+    )
+else()
+    add_library(${PROJECT_NAME} STATIC
+        ${SOURCES} ${HEADERS}
+    )
+endif()
 
-target_include_directories(qBreakpad PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     handler
     third_party/breakpad/src
 )
 
-target_compile_definitions (qBreakpad PRIVATE -D_UNICODE -DUNICODE)
-target_link_libraries(qBreakpad Qt5::Core Qt5::Network)
-
-
-
+target_compile_definitions (${PROJECT_NAME} PRIVATE -D_UNICODE -DUNICODE)
+target_link_libraries(${PROJECT_NAME} Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)
