@@ -45,6 +45,7 @@ else()
         third_party/breakpad/src/client/linux/minidump_writer/linux_dumper.cc
         third_party/breakpad/src/client/linux/minidump_writer/linux_ptrace_dumper.cc
         third_party/breakpad/src/client/linux/minidump_writer/minidump_writer.cc
+        third_party/breakpad/src/client/linux/minidump_writer/pe_file.cc
         third_party/breakpad/src/common/linux/elfutils.cc
         third_party/breakpad/src/common/linux/file_id.cc
         third_party/breakpad/src/common/linux/guid_creator.cc
